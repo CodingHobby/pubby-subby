@@ -1,8 +1,8 @@
 export default class PubSub {
 	/**
-	 * Creates an instance of the PubSub class
+	 * Creates an instance of the PubSub class and initializes it with either the topics specified in the constructor or no topics
 	 */
-	constructor() {
+	constructor(topics={}) {
 		this.topics = {}
 	}
 
@@ -14,12 +14,32 @@ export default class PubSub {
 	 * 
 	 * @return {PubSub} - this
 	 */
-	register(topicName, action) {
+	add(topicName, action) {
 		this.topics[topicName] = this.topics[topicName] || []
 		this.topics[topicName].push(action)
 		return this
 	}
 
+
+	/**
+	 * register multiple topics or multiple actions
+	 * 
+	 * @param {String[] | String} topics - the list of topics / single topic to register 
+	 * @param {function[] | function} actions - the list of actions / single action to register
+	 */
+	register(topics, actions) {
+		if(topics instanceof Array && !actions instanceof Array) {
+			topics.forEach(topic => this.add(topic, actions))
+		} else if(!(topics instanceof Array) && (actions instanceof Array)) {
+			actions.forEach(action => this.add(topics, action))
+		} else if(!(topics instanceof Array) && !(actions instanceof Array)) {
+			this.add(topics, actions)
+		}	else {
+		 	throw new Error("Either the topics or the actions can be expressed as an array, not both.")
+		}
+
+		return this
+	}
 
 	/**
 	 * unregister a topic from the isntance
@@ -55,10 +75,10 @@ export default class PubSub {
 	 * 
 	 * @param {String} topicName - the name of the event to dispatch
 	 */
-	dispatch(topicName) {
+	dispatch(topicName, payload={}) {
 		if (this.topics[topicName]) {
 			let actions = this.topics[topicName]
-			actions.forEach(action => action())
+			actions.forEach(action => action(payload))
 		} else {
 			const msg = `"dispatch" was called on "${topicName}", but "${topicName}" is not a registered topic`
 		}

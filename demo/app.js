@@ -2,8 +2,8 @@ import PubSub from '../src/pubsub'
 
 const pubSub = new PubSub()
 
+
 pubSub.register('add', add)
-pubSub.register('sub', sub)
 
 let count = 0
 
@@ -20,15 +20,10 @@ document.body.appendChild(el)
 document.body.appendChild(addBtn)
 document.body.appendChild(subBtn)
 
-addBtn.addEventListener('click', e => pubSub.dispatch('add'))
-subBtn.addEventListener('click', e => pubSub.dispatch('sub'))
+addBtn.addEventListener('click', e => pubSub.dispatch('add', { value: 1 }))
+subBtn.addEventListener('click', e => pubSub.dispatch('add', { value: -1 }))
 
-function add() {
-	count++
-	el.innerHTML = count
-}
-
-function sub() {
-	count--
+function add(payload) {
+	count += payload.value
 	el.innerHTML = count
 }
