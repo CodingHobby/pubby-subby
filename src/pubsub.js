@@ -1,17 +1,19 @@
 export default class PubSub {
 	/**
 	 * Creates an instance of the PubSub class and initializes it with either the topics specified in the constructor or no topics
+	 *
+	 * @param {Object} topics - the topics to be associated with the instance
 	 */
 	constructor(topics={}) {
-		this.topics = {}
+		this.topics = topics
 	}
 
 	/**
 	 * register a topic for the pubSub instance
-	 * 
+	 *
 	 * @param {String} topicName - the name of the event (or topic) to add
 	 * @param {String} action - the handler (or action) for the added topic
-	 * 
+	 *
 	 * @return {PubSub} - this
 	 */
 	add(topicName, action) {
@@ -23,8 +25,8 @@ export default class PubSub {
 
 	/**
 	 * register multiple topics or multiple actions
-	 * 
-	 * @param {String[] | String} topics - the list of topics / single topic to register 
+	 *
+	 * @param {String[] | String} topics - the list of topics / single topic to register
 	 * @param {function[] | function} actions - the list of actions / single action to register
 	 */
 	register(topics, actions) {
@@ -43,10 +45,10 @@ export default class PubSub {
 
 	/**
 	 * unregister a topic from the isntance
-	 * 
+	 *
 	 * @param {String} topicName - the name of the topic to unregister
 	 * @param {function} action - the function of the listener to remove
-	 * 
+	 *
 	 * @return {PubSub} - this
 	 */
 	unregister(topicName, action) {
@@ -72,7 +74,7 @@ export default class PubSub {
 
 	/**
 	 * dispatch an event
-	 * 
+	 *
 	 * @param {String} topicName - the name of the event to dispatch
 	 */
 	dispatch(topicName, payload={}) {
@@ -88,7 +90,7 @@ export default class PubSub {
 
 	/**
 	 * remove all actions for a topic
-	 * 
+	 *
 	 * @param {String} topicName - the name of the topic to remoev
 	 */
 	deleteTopic(topicName) {
